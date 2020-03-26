@@ -2,4 +2,5 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs/Team_Polk_TP/v15/Browse.VC.db
+/WindowsProject1/.vs/WindowsProject1/v15/Browse.VC.opendb
+/WindowsProject1/.vs/WindowsProject1/v15/Browse.VC.db
