@@ -5,6 +5,7 @@
 Car::Car(){
 	Make = "";
 	Model = "";
+	Year = "";
 	EngineCapacity = "";
 	TransmissionType = "";
 	HandlingCapability = "";
@@ -17,10 +18,11 @@ Car::Car(){
 	ExtraPackages = "";
 };
 //Populated Constructor
-Car::Car(string Mk, string Md, string EC, string TT, string HC, string IC, string SS, string ED, string ID, string AS, string CC, string MP, string EP)
+Car::Car(string Mk, string Md, string Y, string EC, string TT, string HC, string IC, string SS, string ED, string ID, string AS, string CC, string MP, string EP)
   {
   Make = Mk;
 	Model = Md;
+	Year = Y;
 	EngineCapacity = EC;
 	TransmissionType = TT;
 	HandlingCapability = HC;
