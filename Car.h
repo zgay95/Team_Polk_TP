@@ -11,6 +11,7 @@ public:
 	//VARIABLES
 	string Make;
 	string Model;
+	string Year;
 	string EngineCapacity;
 	string TransmissionType;
 	string HandlingCapability;
@@ -24,7 +25,7 @@ public:
 	string ExtraPackages;
 	//FUCNTIONS
 	Car();
-	Car(string Mk, string Md, string EC, string TT, string HC, string IC, string SS, string ED, string ID, string AS, string CC, string MP, string EP);
+	Car(string Mk, string Md, string Y, string EC, string TT, string HC, string IC, string SS, string ED, string ID, string AS, string CC, string MP, string EP);
 };
 
 #endif /* CAR_H */
