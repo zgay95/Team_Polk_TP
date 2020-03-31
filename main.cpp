@@ -70,13 +70,49 @@ vector<Customer> readInCustomerData(vector<Customer> Customers){
   return Customers;
 }
 
+//This function will write the car objects that are stored in the Cars vector to the CarData file and will overwrite any previous data there
+void writeCarData(vector<Car> Cars){
+  ofstream CarFile; //CReate output stream and file
+  CarFile.open ("CarData.csv");
+  //write header to file
+  CarFile << "Make,Model,Year,EngineCapacity,TransmissionType,HandlingCapability,InstrumentsAndControls,SafetyAndSecurity,ExteriorDesign,InteriorDesign,AudioSystem,ComfortAndConvenience,MaintenancePrograms,ExtraPackages";
+  CarFile << endl;
+  for (size_t i = 0; i < Cars.size(); i++) //for every entry in the vector write the object to the file and its own line
+  {
+    Car OutputCar = Cars[i];
+    CarFile << OutputCar.Make << "," << OutputCar.Model << "," << OutputCar.Year << "," << OutputCar.EngineCapacity 
+            << "," << OutputCar.TransmissionType << "," << OutputCar.HandlingCapability << "," << OutputCar.InstrumentsAndControls 
+            << "," << OutputCar.SafetyAndSecurity << "," << OutputCar.ExteriorDesign << "," << OutputCar.InteriorDesign << "," << OutputCar.AudioSystem 
+            << "," << OutputCar.ComfortAndConvenience << "," << OutputCar.MaintenancePrograms << "," << OutputCar.ExtraPackages << endl;
+  }
+  CarFile.close();
+}
+
+//This function will write the Customer objects that are stored in the Customers vector to the CCustomerData file and will overwrite any previous data there
+void writeCustomerData(vector<Customer> Customers){
+  ofstream CustomerFile; //CReate output stream and file
+  CustomerFile.open ("CustomerData.csv");
+  //write header to file
+  CustomerFile << "FirstName,LastName,Email,Phone,Address,City,Zip,CarBought";
+  CustomerFile << endl;
+  for (size_t i = 0; i < Customers.size(); i++) //for every entry in the vector write the object to the file and its own line
+  {
+    Customer OutputCustomer = Customers[i];
+    CustomerFile << OutputCustomer.FirstName << "," << OutputCustomer.LastName << "," << OutputCustomer.Email << "," << OutputCustomer.Phone 
+            << "," << OutputCustomer.Address << "," << OutputCustomer.City << "," << OutputCustomer.Zip << "," << OutputCustomer.CarBought << endl;
+  }
+  CustomerFile.close();
+}
+
 int main()
 {
   Cars = readInCarData(Cars);
-  cout << "Cars size: " <<  Cars.size() << endl;
+  //cout << "Cars size: " <<  Cars.size() << endl;
   Customers = readInCustomerData(Customers);
-  cout << "Customers size: " << Customers.size() << endl;
+  //cout << "Customers size: " << Customers.size() << endl;
 
 
+  writeCarData(Cars);
+  writeCustomerData(Customers);
   return 0;
 }
