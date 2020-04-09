@@ -117,10 +117,207 @@ void clearTerminal(){
 
 }
 
+Car GetCarData(){
+  cin.clear();
+  fflush(stdin);
+	Car* NewCar = new Car();
+	cout << endl << "Vehicle Make:  ";
+  getline(cin, NewCar->Make);
+  cout << endl << "Vehicle Model: ";
+  getline(cin, NewCar->Model);
+  cout << endl << "Vehicle Year: ";
+  getline(cin, NewCar->Year);
+  cout << endl << "Vehicle Engine Capacity: ";
+  getline(cin, NewCar->EngineCapacity);
+  cout << endl << "Vehicle Transmission Type: ";
+  getline(cin, NewCar->TransmissionType);
+  cout << endl << "Vehicle Handling Capacity: ";
+  getline(cin, NewCar->HandlingCapability);
+  cout << endl << "Vehicle Safety and Security: ";
+  getline(cin, NewCar->SafetyAndSecurity);
+  cout << endl << "Vehicle Exterior Design: ";
+  getline(cin, NewCar->ExteriorDesign);
+  cout << endl << "Vehicle Interior Design: ";
+  getline(cin, NewCar->InteriorDesign);
+  cout << endl << "Vehicle Audio System: ";
+  getline(cin, NewCar->AudioSystem);
+  cout << endl << "Vehicle Comfort and Convenience: ";
+  getline(cin, NewCar->ComfortAndConvenience);
+  cout << endl << "Vehicle Maintenence Programs: ";
+  getline(cin, NewCar->MaintenancePrograms);
+  cout << endl << "Vehicle Extra Packages: ";
+  getline(cin, NewCar->ExtraPackages);
+	return *NewCar;
+}
+
+int searchInventory(Car SearchedCar){
+  for (size_t i = 0; i < Cars.size(); i++)
+  { 
+    bool found = true;
+    if (!SearchedCar.Make.empty()) //User entered a value and it matches this car data in inventory
+    {
+      if (SearchedCar.Make != Cars[i].Make)
+      {
+        found = false;
+      }
+    }
+    if (!SearchedCar.Model.empty())
+    {
+      if (SearchedCar.Model != Cars[i].Model)
+      {
+        found = false;
+      }
+    }
+    if (!SearchedCar.Year.empty())
+    {
+      if (SearchedCar.Year != Cars[i].Year)
+      {
+        found = false;
+      }
+    }
+    if (!SearchedCar.EngineCapacity.empty())
+    {
+      if (SearchedCar.EngineCapacity != Cars[i].EngineCapacity)
+      {
+        found = false;
+      }
+    }
+    if (!SearchedCar.TransmissionType.empty())
+    {
+      if (SearchedCar.TransmissionType != Cars[i].TransmissionType)
+      {
+        found = false;
+      }
+    }
+    if (!SearchedCar.HandlingCapability.empty())
+    {
+      if (SearchedCar.HandlingCapability != Cars[i].HandlingCapability)
+      {
+        found = false;
+      }
+    }
+    if (!SearchedCar.SafetyAndSecurity.empty())
+    {
+      if (SearchedCar.SafetyAndSecurity != Cars[i].SafetyAndSecurity)
+      {
+        found = false;
+      }
+    }
+    if (!SearchedCar.ExteriorDesign.empty())
+    {
+      if (SearchedCar.ExteriorDesign != Cars[i].ExteriorDesign)
+      {
+        found = false;
+      }
+    }
+    if (!SearchedCar.InteriorDesign.empty())
+    {
+      if (SearchedCar.InteriorDesign != Cars[i].InteriorDesign)
+      {
+        found = false;
+      }
+    }
+    if (!SearchedCar.AudioSystem.empty())
+    {
+      if (SearchedCar.AudioSystem != Cars[i].AudioSystem)
+      {
+        found = false;
+      }
+    }
+    if (!SearchedCar.ComfortAndConvenience.empty())
+    {
+      if (SearchedCar.ComfortAndConvenience != Cars[i].ComfortAndConvenience)
+      {
+        found = false;
+      }
+    }
+    if (!SearchedCar.MaintenancePrograms.empty())
+    {
+      if (SearchedCar.MaintenancePrograms != Cars[i].MaintenancePrograms)
+      {
+        found = false;
+      }
+    }
+    if (!SearchedCar.ExtraPackages.empty())
+    {
+      if (SearchedCar.ExtraPackages != Cars[i].ExtraPackages)
+      {
+        found = false;
+      }
+    }
+
+    if (found)
+    {
+      int input;
+      cout << endl << "Vehicle found in inventory." << endl;
+      Cars[i].DisplayCarData();
+      cout << endl << "Is this the vehicle you were looking for?" << endl;
+      cout << "Enter 0 for Yes" << endl;
+      cout << "Enter 1 for No" << endl;
+      cin >> input;
+      if (input == 0)
+      {
+        return i;
+      }
+    } 
+  }//end loop
+  cout << endl << "Vehicle not found in inventory." << endl << endl;
+  return -1;
+}
+
+int checkInventory(int del){
+  Car SearchedCar = GetCarData();
+  int index = searchInventory(SearchedCar);
+  if (del == 1 && index != -1)
+  {
+    Cars.erase(Cars.begin()+index);
+  }
+  return 1;
+}
+
+int addDeleteInventory(){
+  cout << "Select a menu to add or delete a vehicle from the inventory." << endl << endl;
+  cout << "Manage Inventory Menu:" << endl;
+  cout << "1. Add Vehicle " << endl;
+  cout << "2. Delete Vehicle " << endl;
+  cout << "3. Exit " << endl << endl;
+
+  int num, subExitCode = 0;
+  cin >> num;
+    switch (num)
+  {
+  case 1:
+    {
+    clearTerminal();
+    //create new car object
+    cout << "Please enter all details about the new vehicle." << endl << endl;
+    cout << "Vehicle Addition Menu:";
+    //Get inputs from suer about car details
+    //add new car to vector
+    Car NewCar = GetCarData();
+    Cars.push_back(NewCar);
+    break;
+    }
+  
+  case 2:
+    clearTerminal();
+    return checkInventory(1);
+    break;
+
+  case 3:
+    clearTerminal();
+    return 1;
+
+  default:
+    clearTerminal();
+    cout << "Please enter a valid number 1-3." << endl;
+    break;
+  }
+}
+
 //This function will display the main menu of the application and accept input from the user to open a submenu
 int mainMenu(){
-  cout << "Welcome to the Vehicle Tracking System." << endl << endl;
-  cout << "Main Menu: " << endl;
+  cout << endl << "Main Menu: " << endl;
   cout << "1. Search Inventory " << endl;
   cout << "2. Add/Delete Vehicles " << endl;
   cout << "3. Process Customer Order " << endl;
@@ -135,15 +332,20 @@ int mainMenu(){
   {
   case 1:
     clearTerminal();
+    cout << "Enter Vehicle data to search the inventory." << endl << endl;
+    cout << "Manage Inventory Menu:" << endl;
     while (subExitCode != 1)
     {
-      subExitCode = searchInventory();
+      subExitCode = checkInventory(0);
     }
     break;
   
   case 2:
     clearTerminal();
-    /* code */
+    while (subExitCode != 1)
+    {
+      subExitCode = addDeleteInventory();
+    }
     break;
   
   case 3:
@@ -173,17 +375,14 @@ int mainMenu(){
   }
 }
 
-int searchInventory(){
-
-
-}
-
 int main()
 {
   Cars = readInCarData(Cars);
   //cout << "Cars size: " <<  Cars.size() << endl;
   Customers = readInCustomerData(Customers);
   //cout << "Customers size: " << Customers.size() << endl;
+
+  cout << "Welcome to the Vehicle Tracking System." << endl << endl;
 
   int exitCode = 0;
   while (exitCode != 6)
