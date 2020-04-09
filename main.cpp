@@ -104,6 +104,80 @@ void writeCustomerData(vector<Customer> Customers){
   CustomerFile.close();
 }
 
+//This function will clear the terminal for a new menu 
+void clearTerminal(){
+  #ifdef __linux__ 
+        system("clear");
+  #elif  __APPLE__ 
+        system("clear");
+  #elif _WIN32
+        system("CLS");
+  #else
+  #endif
+
+}
+
+//This function will display the main menu of the application and accept input from the user to open a submenu
+int mainMenu(){
+  cout << "Welcome to the Vehicle Tracking System." << endl << endl;
+  cout << "Main Menu: " << endl;
+  cout << "1. Search Inventory " << endl;
+  cout << "2. Add/Delete Vehicles " << endl;
+  cout << "3. Process Customer Order " << endl;
+  cout << "4. Manage Car Sales " << endl;
+  cout << "5. Search Car History " << endl;
+  cout << "6. Exit " << endl << endl;
+  cout << "Please enter a number to enter that submenu. " << endl;
+
+  int num, subExitCode = 0;
+  cin >> num;
+  switch (num)
+  {
+  case 1:
+    clearTerminal();
+    while (subExitCode != 1)
+    {
+      subExitCode = searchInventory();
+    }
+    break;
+  
+  case 2:
+    clearTerminal();
+    /* code */
+    break;
+  
+  case 3:
+    clearTerminal();
+    /* code */
+    break;
+
+  case 4:
+    clearTerminal();
+    /* code */
+    break;
+
+  case 5:
+    clearTerminal();
+    /* code */
+    break;
+
+  case 6:
+    clearTerminal();
+    cout << "Thanks for using the Vehicle Tracking System. Exiting Now..." << endl;
+    return 6;
+
+  default:
+    clearTerminal();
+    cout << "Please enter a valid number 1-6." << endl;
+    break;
+  }
+}
+
+int searchInventory(){
+
+
+}
+
 int main()
 {
   Cars = readInCarData(Cars);
@@ -111,8 +185,15 @@ int main()
   Customers = readInCustomerData(Customers);
   //cout << "Customers size: " << Customers.size() << endl;
 
+  int exitCode = 0;
+  while (exitCode != 6)
+  {
+    exitCode = mainMenu();
+  }
 
   writeCarData(Cars);
   writeCustomerData(Customers);
+  cout << "All Data Saved." << endl << endl;
+
   return 0;
 }
