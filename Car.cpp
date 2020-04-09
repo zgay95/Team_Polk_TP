@@ -1,5 +1,6 @@
 //Car CPP file. The logic inside the Car class.
 #include "Car.h"
+#include <iostream>
 
 //Blank Constructor
 Car::Car(){
@@ -35,3 +36,20 @@ Car::Car(string Mk, string Md, string Y, string EC, string TT, string HC, string
 	MaintenancePrograms = MP;
 	ExtraPackages = EP;
   };
+
+void Car::DisplayCarData()
+	{
+		cout << endl << "Vehicle Make:  " << this->Make;
+    cout << endl << "Vehicle Model: " << this->Model;
+    cout << endl << "Vehicle Year: " << this->Year;
+    cout << endl << "Vehicle Engine Capacity: " << this->EngineCapacity;
+    cout << endl << "Vehicle Transmission Type: " << this->TransmissionType;
+    cout << endl << "Vehicle Handling Capacity: " << this->HandlingCapability;
+    cout << endl << "Vehicle Safety and Security: " << this->SafetyAndSecurity;
+    cout << endl << "Vehicle Exterior Design: " << this->ExteriorDesign;
+    cout << endl << "Vehicle Interior Design: " << this->InteriorDesign;
+    cout << endl << "Vehicle Audio System: " << this->AudioSystem;
+    cout << endl << "Vehicle Comfort and Convenience: " << this->ComfortAndConvenience;
+    cout << endl << "Vehicle Maintenence Programs: " << this->MaintenancePrograms;
+    cout << endl << "Vehicle Extra Packages: " << this->ExtraPackages << endl << endl;
+	};
