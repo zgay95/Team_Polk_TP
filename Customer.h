@@ -6,7 +6,7 @@
 
 using namespace std;
 
-class Customer{
+class Customer {
 public:
 	//VARIABLES
 	string FirstName;
@@ -20,7 +20,9 @@ public:
 	//FUCNTIONS
 	Customer();
 	Customer(string FN, string LN, string E, string P, string A, string C, string Z, string CB);
-  string CombineName();
+	void DisplayCustomerData();
+	string CombineName();
+	string printToFile();
 };
 
 #endif /* CUSTOMER_H */

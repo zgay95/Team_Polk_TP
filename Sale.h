@@ -8,14 +8,27 @@
 
 using namespace std;
 
-class Sale{
+class Sale {
 public:
+
+	struct Date {
+		int day, month, year;
+	};
 	//VARIABLES
 	Car CarSold;
-  Customer BuyingCustomer;
+	Customer BuyingCustomer;
+	double priceSold;
+	Date dateSold;
+	string dealer;
+
 	//FUCNTIONS
 	Sale();
-	Sale(Car CS, Customer BC);
+	Sale(Car CS, Customer BC, string price, string date, string dealerName);
+	string dateString();
+	void showSaleInfo();
+	void printSpace(string item, int lengthTotal, int db);
+	string printToFile();
+
 };
 
 #endif /* SALE_H */
