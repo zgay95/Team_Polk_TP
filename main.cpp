@@ -163,8 +163,293 @@ void clearTerminal() {
 
 }
 
-void printInventory(vector<Car> filteredCars) {
+//Center Aligns data
+void printSpace(string item, int lengthTotal) {
+    int size = item.size();
+    int leftSpace = (lengthTotal - size) / 2, rightSpace;
 
+    if ((lengthTotal - size) % 2 == 1)
+        rightSpace = leftSpace + 1;
+    else
+        rightSpace = leftSpace;
+
+    cout << "|";
+    for (int i = 0; i < leftSpace; i++) {
+        cout << " ";
+    }
+    cout << item;
+    for (int i = 0; i < rightSpace; i++) {
+        cout << " ";
+    }
+
+}
+
+vector<Car> filterInventory(vector<Car> carList, int filter, string desc) {
+    vector<Car> filteredCars;
+
+    if (filter == 1) {
+        for (auto car : carList) {
+            if (desc == car.Make)
+                filteredCars.push_back(car);
+        }
+        return filteredCars;
+    } else if (filter == 2) {
+        for (auto car : carList) {
+            if (desc == car.Model)
+                filteredCars.push_back(car);
+        }
+        return filteredCars;
+    } else if (filter == 3) {
+        for (auto car : carList) {
+            if (desc == car.Year)
+                filteredCars.push_back(car);
+        }
+        return filteredCars;
+    } else if (filter == 4) {
+        for (auto car : carList) {
+            if (desc == car.EngineCapacity)
+                filteredCars.push_back(car);
+        }
+        return filteredCars;
+    } else if (filter == 5) {
+        for (auto car : carList) {
+            if (desc == car.TransmissionType)
+                filteredCars.push_back(car);
+        }
+        return filteredCars;
+    } else if (filter == 6) {
+        for (auto car : carList) {
+            if (desc == car.HandlingCapability)
+                filteredCars.push_back(car);
+        }
+        return filteredCars;
+    } else if (filter == 7) {
+        for (auto car : carList) {
+            if (desc == car.InstrumentsAndControls)
+                filteredCars.push_back(car);
+        }
+        return filteredCars;
+    } else if (filter == 8) {
+        for (auto car : carList) {
+            if (desc == car.SafetyAndSecurity)
+                filteredCars.push_back(car);
+        }
+        return filteredCars;
+    } else if (filter == 9) {
+        for (auto car : carList) {
+            if (desc == car.ExteriorDesign)
+                filteredCars.push_back(car);
+        }
+        return filteredCars;
+    } else if (filter == 10) {
+        for (auto car : carList) {
+            if (desc == car.InteriorDesign)
+                filteredCars.push_back(car);
+        }
+        return filteredCars;
+    } else if (filter == 11) {
+        for (auto car : carList) {
+            if (desc == car.AudioSystem)
+                filteredCars.push_back(car);
+        }
+        return filteredCars;
+    } else if (filter == 12) {
+        for (auto car : carList) {
+            if (desc == car.ComfortAndConvenience)
+                filteredCars.push_back(car);
+        }
+        return filteredCars;
+    } else if (filter == 13) {
+        for (auto car : carList) {
+            if (desc == car.MaintenancePrograms)
+                filteredCars.push_back(car);
+        }
+        return filteredCars;
+    } else if (filter == 14) {
+        for (auto car : carList) {
+            if (desc == car.ExtraPackages)
+                filteredCars.push_back(car);
+        }
+    }
+    return filteredCars;
+}
+
+void printInventory(vector<Car> cars) {
+    cout << "|";
+    printSpace("Car Inventory", 53);
+    cout << "||";
+    cout << endl;
+    for (int i = 0; i < 57; i++) {
+        cout << "=";
+    }
+    cout << endl << "|";
+    printSpace("#", 5);
+    printSpace("Make", 16);
+    printSpace("Model", 21);
+    printSpace("Year", 8);
+    cout << "||" << endl;
+
+    int j = 1;
+    for (auto car : cars) {
+        cout << "|";
+        printSpace(to_string(j), 5);
+        printSpace(car.Make, 16);
+        printSpace(car.Model, 21);
+        printSpace(car.Year, 8);
+        cout << "||" << endl;
+        j++;
+    }
+    cout << endl;
+}
+
+Car findCarInInventory() {
+    unsigned int choice;
+    string desc;
+
+    vector<Car> carsList = Cars;
+    Car *foundCar = new Car();
+
+    do {
+        clearTerminal();
+        cout << "Search For Car In Inventory" << endl << endl;
+        cout << "Search By:" << endl;
+        cout << "1) Make" << endl;
+        cout << "2) Model" << endl;
+        cout << "3) Year" << endl;
+        cout << "4) Enginer Capacity" << endl;
+        cout << "5) Transmission Type" << endl;
+        cout << "6) Handling Capability" << endl;
+        cout << "7) Instruments and Controls" << endl;
+        cout << "8) Safety and Security" << endl;
+        cout << "9) Exterior Design" << endl;
+        cout << "10) Interior Design" << endl;
+        cout << "11) Audio System" << endl;
+        cout << "12) Comfort and Convenience" << endl;
+        cout << "13) Maintenance Programs" << endl;
+        cout << "14) Extra Packages" << endl;
+
+        cout << "Enter the number of the filter you want to search by: ";
+        cin >> choice;
+        if (choice >= 1 || choice <= 14) {
+            cin.ignore();
+            fflush(stdin);
+            cout << "Enter the desciption of the car: ";
+            getline(cin, desc);
+            carsList = filterInventory(carsList, choice, desc);
+            if (carsList.empty()) {
+                cout << "There are no cars with that desciption in the inventory" << endl;
+                cout << "Would you like to restart your search? (Y/N): ";
+                do {
+                    cin >> desc;
+                    if (desc == "Y" || desc == "y") {
+                        carsList = Cars;
+                        break;
+                    }
+                    else if (desc == "N" || desc == "n") {
+                        return *foundCar;
+                    }
+                    else {
+                        cout << "Please enter a \"Y\" to restart the search or a \"N\" to quit: ";
+                    }
+                } while (true);
+            }
+            else {
+                do{
+                    clearTerminal();
+                    printInventory(carsList);
+                    
+                    cout << "1) Car has been found" << endl;
+                    cout << "2) I want to see a car's details" << endl;
+                    cout << "3) I want to continue searching" << endl;
+                    cout << "4) I want to restart the search" << endl;
+                    cout << "5) I want to quit searching" << endl << endl;
+                    cout << "Please select the statement that descibes your sitiuation: " << endl;
+                    cin >> choice;
+
+                    if (choice == 1) {
+                        do {
+                            cout << "Enter the number of the car you want select: ";
+                            cin >> choice;
+                            if (choice <= carsList.size() && choice > 0) {
+                                return carsList[choice-1];
+                            }
+                            else {
+                                cout << "Invalid number. Do you want to quit? (Y/N): ";
+                                do {
+                                    cin >> desc;
+                                    if (desc == "Y" || desc == "y") {
+                                        return *foundCar;
+                                    }
+                                    else if (desc == "N" || desc == "n") {
+                                        break;
+                                    }
+                                    else {
+                                        cout << "Please enter a \"Y\" to continue or a \"N\" to quit: ";
+                                    }
+                                } while (true);
+                            }
+                        } while (true); 
+                    }
+                    else if (choice == 2) {
+                        do {
+                            cout << "Enter the number of the car you see the details of: ";
+                            cin >> choice;
+                            if (choice <= carsList.size() && choice > 0) {
+                                clearTerminal();
+                                carsList[choice-1].DisplayCarData();
+                                do {
+                                    cout << "Is this the car you were looking for? (Y/N): ";
+                                    cin >> desc;
+                                    if (desc == "Y" || desc == "y") {
+                                        return carsList[choice - 1];
+                                    }
+                                    else if (desc == "N" || desc == "n") {
+                                        break;
+                                    }
+                                    else {
+                                        cout << "Invalid Input. Please enter a \"Y\" or a \"N\"";
+                                    }
+                                } while (true);
+                                break;
+                            }
+                            else {
+                                cout << "Invalid number. Do you want to quit? (Y/N): ";
+                                do {
+                                    cin >> desc;
+                                    if (desc == "Y" || desc == "y") {
+                                        return *foundCar;
+                                    }
+                                    else if (desc == "N" || desc == "n") {
+                                        break;
+                                    }
+                                    else {
+                                        cout << "Please enter a \"Y\" to continue or a \"N\" to quit: ";
+                                    }
+                                } while (true);
+                            }
+                        } while (true);
+                    }
+                    else if (choice == 3) {
+                        break;
+                    }
+                    else if (choice == 4) {
+                        carsList = Cars;
+                        break;
+                    }
+                    else if (choice == 5) {
+                        return *foundCar;
+                    }
+                    else {
+                        cout << "Invalid choice. Please enter a number 1-4" << endl;
+                    }
+                } while (true);
+            }
+        }
+        else {
+            cout << "Option is not available/ Please enter a number between 1-14" << endl;
+        }
+        
+    } while (true);
 }
 
 Car GetCarData() {
@@ -172,7 +457,7 @@ Car GetCarData() {
     fflush(stdin);
     cin.ignore();
     Car* NewCar = new Car();
-    //getline(cin, NewCar->Make);
+ 
     cout << endl << "Vehicle Make:  ";
     getline(cin, NewCar->Make);
     cout << endl << "Vehicle Model: ";
@@ -302,7 +587,8 @@ int searchInventory(Car SearchedCar) {
 
         if (found)
         {
-            int input;
+            return i;
+            /*int input;
             cout << endl << "Vehicle found in inventory." << endl;
             Cars[i].DisplayCarData();
             cout << endl << "Is this the vehicle you were looking for?" << endl;
@@ -312,41 +598,29 @@ int searchInventory(Car SearchedCar) {
             if (input == 0)
             {
                 return i;
-            }
+            }*/
         }
     }//end loop
     cout << endl << "Vehicle not found in inventory." << endl << endl;
     return -1;
 }
 
-//Center Aligns data
-void printSpace(string item, int lengthTotal) {
-    int size = item.size();
-    int leftSpace = (lengthTotal - size) / 2, rightSpace;
-
-    if ((lengthTotal - size) % 2 == 1)
-        rightSpace = leftSpace + 1;
-    else
-        rightSpace = leftSpace;
-
-    cout << "|";
-    for (int i = 0; i < leftSpace; i++) {
-        cout << " ";
-    }
-    cout << item;
-    for (int i = 0; i < rightSpace; i++) {
-        cout << " ";
-    }
-
-}
-
-//Shows Car and Customer information of a chosen Sale
+//Displays Car and Customer information of a chosen Sale
 int viewSale() {
-    int num;
+    unsigned int num;
     string choice;
-    cout << "Enter which sale you want to see: ";
-    cin >> num;
-    Sale sale = Sales[num - 1];
+    Sale sale;
+    do {
+        cout << "Enter which sale you want to see: ";
+        cin >> num;
+        if (num > 1 && num <= Sales.size()) {
+            sale = Sales[num - 1];
+            break;
+        }
+        else {
+            cout << "Invalid sales number" << endl;
+        }
+    } while (true);
     
     do {
         clearTerminal();
@@ -441,7 +715,7 @@ void printSales() {
 //Creates a new Sale object
 Sale createSale(Car* carSold, Customer* customer) {
     string price, dealer, date;
-
+    cout << "Enter the sales information" << endl << endl;
     cout << "Date of sale (01/12/2000): ";
     cin >> date;
     cout << "Price Sold (no $): ";
@@ -457,7 +731,7 @@ Sale createSale(Car* carSold, Customer* customer) {
 Customer createCustomer(Car* carSold) {
     Customer* newCustomer = new Customer();
 
-    cout << "Enter the customer's information" << endl;
+    cout << "Enter the customer's information" << endl << endl;
     cout << "First Name: ";
     cin >> newCustomer->FirstName;
     cout << "Last Name: ";
@@ -480,10 +754,32 @@ Customer createCustomer(Car* carSold) {
 int addSale() {
     string found;
     int option = 1;
+    Car SearchedCar;
     
     do {
         clearTerminal();
-        Car SearchedCar = GetCarData();
+        do {
+            SearchedCar = findCarInInventory();
+            if (SearchedCar.Make == "") {
+                cout << "No car was selected" << endl;
+                cout << "Would you like to search again: (Y/N): ";
+                do {
+                    cin >> found;
+                    if (found == "Y" || found == "y") {
+                        break;
+                    }
+                    else if (found == "N" || found == "n") {
+                        return 1;
+                    }
+                    else {
+                        cout << "Please enter a \"Y\" to search again or a \"N\" to quit: ";
+                    }
+                } while (true);
+            }
+            else {
+                break;
+            }
+        } while (true);
         int index = searchInventory(SearchedCar);
 
         if (index != 1) {
@@ -493,7 +789,6 @@ int addSale() {
 
             do {
                 if (found == "Y" || found == "y") {
-                    cout << "Please enter the sales information";
                     Customer buyingCustomer = createCustomer(&SearchedCar);
                     Sale saleData = createSale(&SearchedCar, &buyingCustomer);
                     Sales.push_back(saleData);
@@ -540,10 +835,186 @@ int addSale() {
         }
     } while (true);
 }
+Customer editCustomer(Customer customer) {
+    int num;
+    string desc;
+    do {
+        clearTerminal();
+        customer.DisplayCustomerData();
+        cout << endl << endl;
+        cout << "1) First Name" << endl;
+        cout << "2) Last Name" << endl;
+        cout << "3) Email" << endl;
+        cout << "4) Phone Number" << endl;
+        cout << "5) Address" << endl;
+        cout << "6) City" << endl;
+        cout << "7) Zip Code" << endl;
+        cout << "0) Exit" << endl;
+
+        cout << "What do you want to edit: ";
+        cin >> num;
+        if (num == 0) {
+            return customer;
+        }
+        else if (num == 1) {
+            cin.ignore();
+            cout << "Enter the customer's first name: ";
+            getline(cin, customer.FirstName);
+        }
+        else if (num == 2) {
+            cin.ignore();
+            cout << "Enter the customer's last name: ";
+            getline(cin, customer.LastName);
+        }
+        else if (num == 5) {
+            cin.ignore();
+            cout << "Enter the customer's address: ";
+            getline(cin, customer.Address);
+        }
+        else if (num == 6) {
+            cin.ignore();
+            cout << "Enter the customer's city: ";
+            getline(cin, customer.City);
+        }
+        else if (num == 7) {
+            cin.ignore();
+            cout << "Enter the customer's zip code: ";
+            getline(cin, customer.Zip);
+        }
+        else if (num == 4) {
+            cin.ignore();
+            do {
+                cout << "Enter the customer's phone number (e.g. (123) 456-7890): ";
+                getline(cin, desc);
+                if (desc[0] != '(' || desc[4] != ')' || desc[9] != '-' || desc.size() > 15) {
+                    cout << "Invalid Phone Number Format. Try Again" << endl;
+                }
+                else {
+                    customer.Phone = desc;
+                    break;
+                }
+            } while (true);
+        }
+        else if (num == 3) {
+            cin.ignore();
+            cout << "Enter the customer's email: ";
+            getline(cin, customer.Email);
+        }
+        else {
+            cout << "Invalid Option. Try Again" << endl;
+        }
+    }  while (true);
+}
+
+int editSale() {
+
+    unsigned int num, car;
+    string desc;
+    Sale sale;
+    do {
+        clearTerminal();
+        printSales();
+        do {
+            cout << "Enter the number of the sale you want to edit (0 to exit): ";
+            cin >> car;
+            if (car == 0) {
+                return 1;
+            }
+            else if (car > 0 && car <= Sales.size()) {
+                sale = Sales[car-1];
+                break;
+            }
+            else {
+                cout << "Invalid Sales Number" << endl;
+            }
+        } while (true);
+
+        do {
+            cout << "1) Car" << endl;
+            cout << "2) Customer" << endl;
+            cout << "3) Price Sold" << endl;
+            cout << "4) Date Sold" << endl;
+            cout << "5) Dealer" << endl;
+            cout << "6) Back" << endl;
+
+            cout << "What data would you like to edit: ";
+            cin >> num;
+            if (num < 0 || num > 6) {
+                cout << "Invalid Option" << endl;
+            }
+            else if (num == 1) {
+                Car newCar = findCarInInventory();
+                if (newCar.Make != "") {
+                    sale.CarSold = newCar;
+                    Sales[car - 1] = sale;
+                }
+                break;
+            }
+            else if (num == 2) {
+                sale.BuyingCustomer = editCustomer(sale.BuyingCustomer);
+                Sales[car - 1] = sale;
+                break;
+            }
+            else if (num == 3) {
+                do {
+                    cout << "Enter the price the car was sold for (No \"$\") (0 to exit): ";
+                    cin >> desc;
+                    if (desc != "0") {
+                        sale.setPrice(desc);
+                        Sales[car - 1] = sale;
+                    }
+                    break;
+                } while (true);
+            }
+            else if (num == 4) {
+                do {
+                    cout << "Enter the date of the sale (01:12:2019) (0 to exit): ";
+                    cin >> desc;
+                    if (desc == "0") {
+                        break;
+                    }
+                    else if (desc[2] != ':' || desc[5] != ':') {
+                        cout << "Date is in the wrong format. Try again" << endl;
+                    }
+                    else if (stoi(desc.substr(0, 2)) > 12 || stoi(desc.substr(0, 2)) < 1){
+                        cout << "Invalid Month. Try again" << endl;
+                    }
+                    else if (stoi(desc.substr(3, 5)) > 31 || stoi(desc.substr(3, 5)) < 1) {
+                        cout << "Invalid Day. Try again" << endl;
+                    }
+                    else if (stoi(desc.substr(6, 8)) > 2200 || stoi(desc.substr(6, 8)) < 1900) {
+                        cout << "Invalid Year. Try again" << endl;
+                    }
+                    else {
+                        sale.setDate(desc);
+                        Sales[car - 1] = sale;
+                        break;
+                    }
+                } while (true);
+            }
+            else if (num == 5){
+                cout << "Enter the name of the dealer who made the sale (0 to exit): ";
+                cin >> desc;
+                if (desc != "0") {
+                    sale.dealer = desc;
+                    Sales[car - 1] = sale;
+                }
+                break;
+            }
+            else {
+                break;
+            }
+            break;
+        } while (true);
+    } while (true);
+
+    
+}
 
 //Deletes a sale from the Sales vector
 int deleteSale() {
-    int num;
+    unsigned int num;
+
     do {
         cout << "Enter which sale you want to delete (0 to exit): ";
         cin >> num;
@@ -582,11 +1053,12 @@ int salesMenu() {
         cout << "Select a menu to add or delete a sale." << endl << endl;
         cout << "Manage Sales Menu:" << endl;
         cout << "1. View Sale Details" << endl;
-        cout << "2. Add Sale " << endl;
-        cout << "3. Delete Sale " << endl;
-        cout << "4. Exit " << endl << endl;
+        cout << "2. Add Sale" << endl;
+        cout << "3. Edit Sale Data" << endl;
+        cout << "4. Delete Sale " << endl;
+        cout << "5. Exit " << endl << endl;
 
-
+        cout << "Menu: ";
         cin >> num;
 
         switch (num) {
@@ -597,9 +1069,12 @@ int salesMenu() {
             addSale();
             break;
         case 3:
-            deleteSale();
+            editSale();
             break;
         case 4:
+            deleteSale();
+            break;
+        case 5:
             clearTerminal();
             return 1;
             break;
@@ -611,7 +1086,7 @@ int salesMenu() {
 }
 
 int checkInventory(int del) {
-    Car SearchedCar = GetCarData();
+    Car SearchedCar = findCarInInventory();
     int index = searchInventory(SearchedCar);
     if (del == 1 && index != -1)
     {
@@ -666,6 +1141,8 @@ int addDeleteInventory() {
 int mainMenu() {
     int num, subExitCode = 0;
     do {
+        clearTerminal();
+        cout << "Welcome to the Vehicle Tracking System." << endl << endl;
         cout << endl << "Main Menu: " << endl;
         cout << "1. Search Inventory " << endl;
         cout << "2. Add/Delete Vehicles " << endl;
@@ -679,9 +1156,6 @@ int mainMenu() {
         switch (num)
         {
         case 1:
-            clearTerminal();
-            cout << "Enter Vehicle data to search the inventory." << endl << endl;
-            cout << "Manage Inventory Menu:" << endl;
             while (subExitCode != 1)
             {
                 subExitCode = checkInventory(0);
@@ -733,8 +1207,6 @@ int main()
     Customers = readInCustomerData(Customers);
     //cout << "Customers size: " << Customers.size() << endl;
     Sales = ReadInSaleData(Sales);
-
-    cout << "Welcome to the Vehicle Tracking System." << endl << endl;
 
     int exitCode = 0;
     while (exitCode != 6)

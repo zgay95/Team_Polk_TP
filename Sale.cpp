@@ -29,6 +29,17 @@ Sale::Sale(Car CS, Customer BC, string price, string date, string dealerName) {
     dealer = dealerName;
 };
 
+void Sale::setPrice(string price) {
+    string::size_type sz;
+    priceSold = stod(price, &sz);
+}
+
+void Sale::setDate(string date) {
+    dateSold.month = stoi(date.substr(0, 2));
+    dateSold.day = stoi(date.substr(3, 5));
+    dateSold.year = stoi(date.substr(6, 8));
+}
+
 string Sale::dateString() {
     string day, month;
     if (this->dateSold.month < 10) {

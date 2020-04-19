@@ -27,6 +27,8 @@ public:
 	string dateString();
 	void showSaleInfo();
 	void printSpace(string item, int lengthTotal, int db);
+	void setPrice(string price);
+	void setDate(string date);
 	string printToFile();
 
 };
