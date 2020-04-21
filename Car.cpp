@@ -19,7 +19,7 @@ Car::Car() {
 	ExtraPackages = "";
 };
 //Populated Constructor
-Car::Car(string Mk, string Md, string Y, string EC, string TT, string HC, string IC, string SS, string ED, string ID, string AS, string CC, string MP, string EP) {
+Car::Car(string Mk, string Md, string Y, string EC, string TT, string HC, string IC, string SS, string ED, string ID, string AS, string CC, string MP, string EP, string DD, string SM, string UR) {
 	Make = Mk;
 	Model = Md;
 	Year = Y;
@@ -34,6 +34,9 @@ Car::Car(string Mk, string Md, string Y, string EC, string TT, string HC, string
 	ComfortAndConvenience = CC;
 	MaintenancePrograms = MP;
 	ExtraPackages = EP;
+	DeliveryDate = DD;
+	SchedueledMaintenance = SM;
+	UnschedueledRepairs = UR;
 };
 
 void Car::DisplayCarData()
