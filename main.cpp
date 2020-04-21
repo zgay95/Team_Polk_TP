@@ -470,7 +470,7 @@ Car GetCarData() {
     getline(cin, NewCar->TransmissionType);
     cout << endl << "Vehicle Handling Capacity: ";
     getline(cin, NewCar->HandlingCapability);
-    cout << endl << "Vehicle Instruments and Controls";
+    cout << endl << "Vehicle Instruments and Controls: ";
     getline(cin, NewCar->InstrumentsAndControls);
     cout << endl << "Vehicle Safety and Security: ";
     getline(cin, NewCar->SafetyAndSecurity);
@@ -1112,7 +1112,7 @@ int addDeleteInventory() {
             clearTerminal();
             //create new car object
             cout << "Please enter all details about the new vehicle." << endl << endl;
-            cout << "Vehicle Addition Menu:";
+            cout << "Vehicle Addition Menu: " << endl;
             //Get inputs from user about car details
             //add new car to vector
             Car NewCar = GetCarData();
