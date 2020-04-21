@@ -23,10 +23,13 @@ public:
 	string ComfortAndConvenience;
 	string MaintenancePrograms;
 	string ExtraPackages;
+	string DeliveryDate;
+	string SchedueledMaintenance;
+	string UnschedueledRepairs;
 
 	//FUCNTIONS
 	Car();
-	Car(string Mk, string Md, string Y, string EC, string TT, string HC, string IC, string SS, string ED, string ID, string AS, string CC, string MP, string EP);
+	Car(string Mk, string Md, string Y, string EC, string TT, string HC, string IC, string SS, string ED, string ID, string AS, string CC, string MP, string EP, string DD, string SM, string UR);
 	void DisplayCarData();
 	string carName();
 	string printToFile();

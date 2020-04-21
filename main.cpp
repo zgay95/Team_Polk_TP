@@ -33,7 +33,7 @@ vector<Car> readInCarData(vector<Car> Cars) {
                 Fields.push_back(field); //add column to vector
             }
             //new object to assign values to
-            Car* InputCar = new Car(Fields[0], Fields[1], Fields[2], Fields[3], Fields[4], Fields[5], Fields[6], Fields[7], Fields[8], Fields[9], Fields[10], Fields[11], Fields[12], Fields[13]);
+            Car* InputCar = new Car(Fields[0], Fields[1], Fields[2], Fields[3], Fields[4], Fields[5], Fields[6], Fields[7], Fields[8], Fields[9], Fields[10], Fields[11], Fields[12], Fields[13], Fields[14], Fields[15], Fields[16]);
             Cars.push_back(*InputCar);
             Fields.clear(); //clear vector memory for next entry
         }
@@ -88,7 +88,7 @@ vector<Sale> ReadInSaleData(vector<Sale> Sales) {
             }
             if (first != 0) {
                 //new object to assign values to
-                Car* InputCar = new Car(Fields[0], Fields[1], Fields[2], Fields[3], Fields[4], Fields[5], Fields[6], Fields[7], Fields[8], Fields[9], Fields[10], Fields[11], Fields[12], Fields[13]);
+                Car* InputCar = new Car(Fields[0], Fields[1], Fields[2], Fields[3], Fields[4], Fields[5], Fields[6], Fields[7], Fields[8], Fields[9], Fields[10], Fields[11], Fields[12], Fields[13], " ", " ", " ");
                 Customer* InputCustomer = new Customer(Fields[14], Fields[15], Fields[16], Fields[17], Fields[18], Fields[19], Fields[20], InputCar->carName());
                 Sale* InputSale = new Sale(*InputCar, *InputCustomer, Fields[21], Fields[22], Fields[23]);
                 Sales.push_back(*InputSale);
@@ -106,7 +106,7 @@ void writeCarData(vector<Car> Cars) {
     ofstream CarFile; //CReate output stream and file
     CarFile.open("CarData.csv");
     //write header to file
-    CarFile << "Make,Model,Year,EngineCapacity,TransmissionType,HandlingCapability,InstrumentsAndControls,SafetyAndSecurity,ExteriorDesign,InteriorDesign,AudioSystem,ComfortAndConvenience,MaintenancePrograms,ExtraPackages";
+    CarFile << "Make,Model,Year,EngineCapacity,TransmissionType,HandlingCapability,InstrumentsAndControls,SafetyAndSecurity,ExteriorDesign,InteriorDesign,AudioSystem,ComfortAndConvenience,MaintenancePrograms,ExtraPackages,Delivery Date,Scheduled Maintenance,Unscheduled Repairs";
     CarFile << endl;
     for (size_t i = 0; i < Cars.size(); i++) //for every entry in the vector write the object to the file and its own line
     {
@@ -114,7 +114,8 @@ void writeCarData(vector<Car> Cars) {
         CarFile << OutputCar.Make << "," << OutputCar.Model << "," << OutputCar.Year << "," << OutputCar.EngineCapacity
             << "," << OutputCar.TransmissionType << "," << OutputCar.HandlingCapability << "," << OutputCar.InstrumentsAndControls
             << "," << OutputCar.SafetyAndSecurity << "," << OutputCar.ExteriorDesign << "," << OutputCar.InteriorDesign << "," << OutputCar.AudioSystem
-            << "," << OutputCar.ComfortAndConvenience << "," << OutputCar.MaintenancePrograms << "," << OutputCar.ExtraPackages << endl;
+            << "," << OutputCar.ComfortAndConvenience << "," << OutputCar.MaintenancePrograms << "," << OutputCar.ExtraPackages
+            << "," << OutputCar.DeliveryDate << "," << OutputCar.SchedueledMaintenance << "," << OutputCar.UnschedueledRepairs << endl;
     }
     CarFile.close();
 }
@@ -316,7 +317,7 @@ Car findCarInInventory() {
         cout << "1) Make" << endl;
         cout << "2) Model" << endl;
         cout << "3) Year" << endl;
-        cout << "4) Enginer Capacity" << endl;
+        cout << "4) Engine Capacity" << endl;
         cout << "5) Transmission Type" << endl;
         cout << "6) Handling Capability" << endl;
         cout << "7) Instruments and Controls" << endl;
@@ -1096,7 +1097,7 @@ int checkInventory(int del) {
 }
 
 int addDeleteInventory() {
-    int num, subExitCode = 0;
+    int num;
     do {
         cout << "Select a menu to add or delete a vehicle from the inventory." << endl << endl;
         cout << "Manage Inventory Menu:" << endl;
@@ -1132,6 +1133,43 @@ int addDeleteInventory() {
         default:
             clearTerminal();
             cout << "Please enter a valid number 1-3." << endl;
+            break;
+        }
+    } while (true);
+}
+
+int VehicleHistory() {
+    int num, key;
+    do {
+        clearTerminal();
+        cout << "Search for a Vehicle to find its History." << endl << endl;
+        cout << "Search Vehicle History Menu:" << endl;
+        cout << "1. Search For Vehicle " << endl;
+        cout << "2. Exit " << endl << endl;
+
+        cin >> num;
+        switch (num)
+        {
+        case 1:
+        {
+            clearTerminal();
+            //Search for the vehicle then display its history
+            Car SearchedCar = findCarInInventory();
+            cout << endl << "Vehicle History " << endl;
+            cout << "Delivery Date: " << SearchedCar.DeliveryDate << endl;
+            cout << "Scheduled Maintenance: " << SearchedCar.SchedueledMaintenance  << endl;
+            cout << "Unscheduled Repairs: " << SearchedCar.UnschedueledRepairs << endl << endl;
+            cout << "Press any number key to continue... " << endl;
+            cin >> key;
+            break;
+        }
+        case 2:
+            clearTerminal();
+            return 1;
+
+        default:
+            clearTerminal();
+            cout << "Please enter a valid number 1-2." << endl;
             break;
         }
     } while (true);
@@ -1185,7 +1223,9 @@ int mainMenu() {
 
         case 5:
             clearTerminal();
-            /* code */
+            while (subExitCode != 1) {
+                subExitCode = VehicleHistory();
+            }
             break;
 
         case 6:
