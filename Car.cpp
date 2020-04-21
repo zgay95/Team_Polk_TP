@@ -17,9 +17,10 @@ Car::Car() {
 	ComfortAndConvenience = "";
 	MaintenancePrograms = "";
 	ExtraPackages = "";
+
 };
 //Populated Constructor
-Car::Car(string Mk, string Md, string Y, string EC, string TT, string HC, string IC, string SS, string ED, string ID, string AS, string CC, string MP, string EP, string DD, string SM, string UR) {
+Car::Car(string Mk, string Md, string Y, string EC, string TT, string HC, string IC, string SS, string ED, string ID, string AS, string CC, string MP, string EP, string DD, string SM, string UR, string OR) {
 	Make = Mk;
 	Model = Md;
 	Year = Y;
@@ -35,8 +36,21 @@ Car::Car(string Mk, string Md, string Y, string EC, string TT, string HC, string
 	MaintenancePrograms = MP;
 	ExtraPackages = EP;
 	DeliveryDate = DD;
+	try {
+		if (!DD.empty() && DD != " ") {
+			dateOfDelivery.month = stoi(DD.substr(0, 2));
+			dateOfDelivery.day = stoi(DD.substr(3, 5));
+			dateOfDelivery.year = stoi(DD.substr(6, 8));
+		}
+	}
+	catch (const invalid_argument& e) {
+
+	}
+	catch (const exception& e){}
+
 	SchedueledMaintenance = SM;
 	UnschedueledRepairs = UR;
+	OrderStatus = OR;
 };
 
 void Car::DisplayCarData()
@@ -53,8 +67,43 @@ void Car::DisplayCarData()
 	cout << endl << "Vehicle Audio System: " << this->AudioSystem;
 	cout << endl << "Vehicle Comfort and Convenience: " << this->ComfortAndConvenience;
 	cout << endl << "Vehicle Maintenence Programs: " << this->MaintenancePrograms;
-	cout << endl << "Vehicle Extra Packages: " << this->ExtraPackages << endl << endl;
+	cout << endl << "Vehicle Extra Packages: " << this->ExtraPackages;
+	cout << endl << "Order Status: " << endl << endl;
 };
+
+void Car::setDate(string date) {
+	try {
+		dateOfDelivery.month = stoi(date.substr(0, 2));
+		dateOfDelivery.day = stoi(date.substr(3, 5));
+		dateOfDelivery.year = stoi(date.substr(6, 8));
+	}
+	catch (const exception& e) {
+
+	}
+}
+string Car::dateString() {
+	string day, month;
+	try {
+		if (this->dateOfDelivery.month < 10) {
+			month = "0" + to_string(this->dateOfDelivery.month);
+		}
+		else
+			month = to_string(this->dateOfDelivery.month);
+		if (dateOfDelivery.day < 10) {
+			day = "0" + to_string(this->dateOfDelivery.day);
+		}
+		else
+			day = to_string(this->dateOfDelivery.day);
+
+		return month + ":" + day + ":" + to_string(this->dateOfDelivery.year);
+	}
+	catch (const bad_alloc& e) {
+		return "";
+	}
+	catch (const exception& e){
+		return "";
+	}
+}
 
 string Car::carName() {
 	return this->Year + " " + this->Make + " " + this->Model;
