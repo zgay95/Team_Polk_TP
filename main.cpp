@@ -333,11 +333,11 @@ Car findCarInInventory() {
         if (choice >= 1 || choice <= 14) {
             cin.ignore();
             fflush(stdin);
-            cout << "Enter the desciption of the car: ";
+            cout << "Enter the description of the car: ";
             getline(cin, desc);
             carsList = filterInventory(carsList, choice, desc);
             if (carsList.empty()) {
-                cout << "There are no cars with that desciption in the inventory" << endl;
+                cout << "There are no cars with that description in the inventory" << endl;
                 cout << "Would you like to restart your search? (Y/N): ";
                 do {
                     cin >> desc;
@@ -1142,6 +1142,7 @@ int mainMenu() {
     int num, subExitCode = 0;
     do {
         clearTerminal();
+		subExitCode = 0;
         cout << "Welcome to the Vehicle Tracking System." << endl << endl;
         cout << endl << "Main Menu: " << endl;
         cout << "1. Search Inventory " << endl;
