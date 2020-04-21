@@ -363,7 +363,7 @@ Car findCarInInventory() {
                     cout << "3) I want to continue searching" << endl;
                     cout << "4) I want to restart the search" << endl;
                     cout << "5) I want to quit searching" << endl << endl;
-                    cout << "Please select the statement that descibes your sitiuation: " << endl;
+                    cout << "Please select the statement that descibes your situation: " << endl;
                     cin >> choice;
 
                     if (choice == 1) {
