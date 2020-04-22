@@ -35,7 +35,7 @@ vector<Car> readInCarData(vector<Car> Cars) {
                 Fields.push_back(field); //add column to vector
             }
             //new object to assign values to
-            Car* InputCar = new Car(Fields[0], Fields[1], Fields[2], Fields[3], Fields[4], Fields[5], Fields[6], Fields[7], Fields[8], Fields[9], Fields[10], Fields[11], Fields[12], Fields[13], Fields[14], Fields[15], Fields[16], Fields[17]);
+            Car* InputCar = new Car(Fields[0], Fields[1], Fields[2], Fields[3], Fields[4], Fields[5], Fields[6], Fields[7], Fields[8], Fields[9], Fields[10], Fields[11], Fields[12], Fields[13], Fields[14], Fields[15], Fields[16], Fields[17], Fields[18]);
             Cars.push_back(*InputCar);
             Fields.clear(); //clear vector memory for next entry
         }
@@ -90,7 +90,7 @@ vector<Sale> ReadInSaleData(vector<Sale> Sales) {
             }
             if (first != 0) {
                 //new object to assign values to
-                Car* InputCar = new Car(Fields[0], Fields[1], Fields[2], Fields[3], Fields[4], Fields[5], Fields[6], Fields[7], Fields[8], Fields[9], Fields[10], Fields[11], Fields[12], Fields[13], " ", " ", " ", " ");
+                Car* InputCar = new Car(Fields[0], Fields[1], Fields[2], Fields[3], Fields[4], Fields[5], Fields[6], Fields[7], Fields[8], Fields[9], Fields[10], Fields[11], Fields[12], Fields[13], " ", " ", " ", " ", " ");
                 Customer* InputCustomer = new Customer(Fields[14], Fields[15], Fields[16], Fields[17], Fields[18], Fields[19], Fields[20], InputCar->carName());
                 Sale* InputSale = new Sale(*InputCar, *InputCustomer, Fields[21], Fields[22], Fields[23]);
                 Sales.push_back(*InputSale);
@@ -108,7 +108,7 @@ void writeCarData(vector<Car> Cars) {
     ofstream CarFile; //CReate output stream and file
     CarFile.open("CarData.csv");
     //write header to file
-    CarFile << "Make,Model,Year,EngineCapacity,TransmissionType,HandlingCapability,InstrumentsAndControls,SafetyAndSecurity,ExteriorDesign,InteriorDesign,AudioSystem,ComfortAndConvenience,MaintenancePrograms,ExtraPackages,DeliveryDate,ScheduledMaintenance,UnscheduledRepairs,OrderStatus";
+    CarFile << "Make,Model,Year,EngineCapacity,TransmissionType,HandlingCapability,InstrumentsAndControls,SafetyAndSecurity,ExteriorDesign,InteriorDesign,AudioSystem,ComfortAndConvenience,MaintenancePrograms,ExtraPackages,DeliveryDate,ScheduledMaintenance,UnscheduledRepairs,OrderStatus,Customer";
     CarFile << endl;
     for (size_t i = 0; i < Cars.size(); i++) //for every entry in the vector write the object to the file and its own line
     {
@@ -117,7 +117,7 @@ void writeCarData(vector<Car> Cars) {
             << "," << OutputCar.TransmissionType << "," << OutputCar.HandlingCapability << "," << OutputCar.InstrumentsAndControls
             << "," << OutputCar.SafetyAndSecurity << "," << OutputCar.ExteriorDesign << "," << OutputCar.InteriorDesign << "," << OutputCar.AudioSystem
             << "," << OutputCar.ComfortAndConvenience << "," << OutputCar.MaintenancePrograms << "," << OutputCar.ExtraPackages
-            << "," << OutputCar.DeliveryDate << "," << OutputCar.SchedueledMaintenance << "," << OutputCar.UnschedueledRepairs << "," << OutputCar.OrderStatus << endl;
+            << "," << OutputCar.DeliveryDate << "," << OutputCar.SchedueledMaintenance << "," << OutputCar.UnschedueledRepairs << "," << OutputCar.OrderStatus << "," << OutputCar.Customer << endl;
     }
     CarFile.close();
 }
@@ -175,7 +175,7 @@ void clearLine() {
 bool isValidDate(string date) {
 
     try {
-        if ((date[2] != ':' || date[5] != ':') && (date[2] != '-' || date[5] != '-')) {
+        if ((date[2] != ':' || date[5] != ':') && (date[2] != '-' || date[5] != '-') && (date[2] != '/' || date[5] != '/')) {
             cout << "Date is in the wrong format. Try again" << endl;
             return false;
         }
@@ -183,19 +183,23 @@ bool isValidDate(string date) {
             cout << "Invalid month. Try again" << endl;
             return false;
         }
-        else if (stoi(date.substr(3, 5)) > 31 || stoi(date.substr(3, 5)) < 1) {
+        else if (stoi(date.substr(3, 2)) > 31 || stoi(date.substr(3, 2)) < 1) {
             cout << "Invalid day. Try again" << endl;
             return false;
         }
-        else if (stoi(date.substr(6, 10)) > 2200 || stoi(date.substr(6, 10)) < 1900) {
+        else if (stoi(date.substr(6, 4)) > 2200 || stoi(date.substr(6, 4)) < 1900) {
             cout << "Invalid year. Try again" << endl;
             return false;
         }
-        else if (stoi(date.substr(3, 5)) == 2 && stoi(date.substr(3, 5)) == 29 && (stoi(date.substr(6, 10)) % 4) != 0) {
+        else if (stoi(date.substr(3, 2)) == 2 && stoi(date.substr(3, 2)) == 29 && (stoi(date.substr(6, 4)) % 4) != 0) {
             cout << "Invalid date. Try again" << endl;
             return false;
         }
-        else if (stoi(date.substr(3, 5)) == 31 && stoi(date.substr(0, 2)) != 1) {
+        else if (stoi(date.substr(3, 2)) == 2 && stoi(date.substr(3, 2)) > 29) {
+            cout << "Invalid date. Try again" << endl;
+            return false;
+        }
+        else if (stoi(date.substr(3, 2)) == 31 && stoi(date.substr(0, 2)) != 1) {
             if (stoi(date.substr(0, 2)) != 3)
                 if (stoi(date.substr(0, 2)) != 5)
                     if (stoi(date.substr(0, 2)) != 7)
@@ -263,6 +267,68 @@ bool checkMatch(string desc1, string desc2) {
         return false;
     }
 
+}
+
+vector<Customer> filterCustomers(vector<Customer> customerList, int filter, string desc) {
+    vector<Customer> filteredCustomers;
+
+    if (filter == 1) {
+        for (auto car : customerList) {
+            if (checkMatch(desc, car.FirstName))
+                filteredCustomers.push_back(car);
+        }
+        return filteredCustomers;
+    }
+    else if (filter == 2) {
+        for (auto car : customerList) {
+            if (checkMatch(desc, car.LastName))
+                filteredCustomers.push_back(car);
+        }
+        return filteredCustomers;
+    }
+    else if (filter == 3) {
+        for (auto car : customerList) {
+            if (checkMatch(desc, car.Address))
+                filteredCustomers.push_back(car);
+        }
+        return filteredCustomers;
+    }
+    else if (filter == 4) {
+        for (auto car : customerList) {
+            if (checkMatch(desc, car.City))
+                filteredCustomers.push_back(car);
+        }
+        return filteredCustomers;
+    }
+    else if (filter == 5) {
+        for (auto car : customerList) {
+            if (checkMatch(desc, car.Zip))
+                filteredCustomers.push_back(car);
+        }
+        return filteredCustomers;
+    }
+    else if (filter == 6) {
+        for (auto car : customerList) {
+            if (checkMatch(desc, car.Phone))
+                filteredCustomers.push_back(car);
+        }
+        return filteredCustomers;
+    }
+    else if (filter == 7) {
+        for (auto car : customerList) {
+            if (checkMatch(desc, car.Email))
+                filteredCustomers.push_back(car);
+        }
+        return filteredCustomers;
+    }
+    else if (filter == 8) {
+        for (auto car : customerList) {
+            if (checkMatch(desc, car.CarBought))
+                filteredCustomers.push_back(car);
+        }
+        return filteredCustomers;
+    }
+    return filteredCustomers;
 }
 
 vector<Car> filterInventory(vector<Car> carList, int filter, string desc) {
@@ -380,6 +446,34 @@ vector<Car> filterInventory(vector<Car> carList, int filter, string desc) {
     return filteredCars;
 }
 
+void printCustomers(vector<Customer> customer) {
+    cout << "|";
+    printSpace("Customer List", 66);
+    cout << "||";
+    cout << endl;
+    for (int i = 0; i < 70; i++) {
+        cout << "=";
+    }
+    cout << endl << "|";
+    printSpace("#", 5);
+    printSpace("First Name", 14);
+    printSpace("Last Name", 14);
+    printSpace("Car Ordered", 30);
+    cout << "||" << endl;
+
+    int j = 1;
+    for (auto c : customer) {
+        cout << "|";
+        printSpace(to_string(j), 5);
+        printSpace(c.FirstName, 14);
+        printSpace(c.LastName, 14);
+        printSpace(c.CarBought, 30);
+        cout << "||" << endl;
+        j++;
+    }
+    cout << endl;
+}
+
 void printInventory(vector<Car> cars) {
     cout << "|";
     printSpace("Car Inventory", 53);
@@ -438,6 +532,154 @@ void printOrderStatus(vector<Car> cars) {
         j++;
     }
     cout << endl;
+}
+
+Customer findCustomer() {
+    int num;
+    unsigned int choice;
+    string desc;
+
+    vector<Customer> customers = Customers;
+    Customer* foundCustomer = new Customer();
+
+    do {
+        do {
+            clearTerminal();
+            cout << "Search For Customer" << endl << endl;
+            cout << "Search By:" << endl;
+            cout << "1) First Name" << endl;
+            cout << "2) Last Name" << endl;
+            cout << "3) Address" << endl;
+            cout << "4) City" << endl;
+            cout << "5) Zip Code" << endl;
+            cout << "6) Phone Number" << endl;
+            cout << "7) Email" << endl;
+            cout << "8) Car Ordered" << endl;
+            cout << "9) All Customers" << endl;
+            cout << "0) Exit" << endl;
+
+            do {
+                cout << "Menu: ";
+                cin >> num;
+                clearLine();
+                if (num >= 0 && num <= 9) {
+                    break;
+                }
+                cout << "Invalid Option Please enter a number between 0-10" << endl;
+            } while (true);
+
+            if (num == 0) {
+                return *foundCustomer;
+            }
+            else if (num == 9) {
+                customers = Customers;
+            }
+            else {
+                cout << "Enter the description: " << endl;
+                cin >> desc;
+                customers = filterCustomers(customers, num, desc);
+                if (customers.empty()) {
+                    cout << endl <<  "Customer was not found using that description";
+                    do {
+                        cout << "Would you like to search again (Y/N): ";
+                        cin >> desc;
+                        clearLine();
+                        if (desc == "Y" || desc == "y") {
+                            break;
+                        }
+                        else if (desc == "N" || desc == "n") {
+                            return *foundCustomer;
+                        }
+                        else {
+                            cout << "Invalid Input. Please enter a \"Y\" or a \"N\"";
+                        }
+                    } while (true);
+                }
+                else {
+                    break;
+                }
+
+            }
+        } while (true);
+        do {
+            clearTerminal();
+            printCustomers(customers);
+
+            cout << "1) I want to choose from the table" << endl;
+            cout << "2) I want to see a customer's details" << endl;
+            cout << "3) I want to continue searching" << endl;
+            cout << "4) I want to restart the search" << endl;
+            cout << "5) I want to quit searching" << endl << endl;
+
+            do {
+                cout << "Please select the statement that descibes your situation: ";
+                cin >> num;
+                clearLine();
+                if (num >= 0 && num <= 5) {
+                    break;
+                }
+                cout << "Invalid Option Please enter a number between 1-5" << endl;
+            } while (true);
+            if (num == 1) {
+                do {
+                    cout << "Enter the number of the customer you want select (0 to exit): ";
+                    cin >> choice;
+                    clearLine();
+                    if (choice >= 0 && choice <= customers.size()) {
+                        break;
+                    }
+                    cout << "Invalid option. Try again" << endl;
+                } while (true);
+                if (choice == 0){
+                    break;
+                }
+                return customers[choice - 1];
+            }
+            else if (num == 2) {
+                do {
+                    cout << "Enter the number of the customer you want to details for (0 to exit): ";
+                    cin >> choice;
+                    clearLine();
+                    if (choice >= 0 && choice <= customers.size()) {
+                        break;
+                    }
+                    cout << "Invalid option. Try again" << endl;
+                } while (true);
+                if (choice == 0) {
+                    break;
+                }
+                clearTerminal();
+                customers[choice - 1].DisplayCustomerData();
+                do {
+                    cout << "Is this the customer you were looking for? (Y/N): ";
+                    cin >> desc;
+                    if (desc == "Y" || desc == "y") {
+                        return customers[choice - 1];
+                    }
+                    else if (desc == "N" || desc == "n") {
+                        break;
+                    }
+                    else {
+                        clearLine();
+                        cout << "Invalid Input. Please enter a \"Y\" or a \"N\"";
+                    }
+                } while (true);
+                break;
+            }
+            else if (num == 3) {
+                break;
+            }
+            else if (num == 4) {
+                customers = Customers;
+                break;
+            }
+            else {
+                return *foundCustomer;
+            }
+
+        } while (true);
+        
+    } while (true);
 }
 
 Car findCarInInventory(int mode) {
@@ -608,9 +850,6 @@ Car findCarInInventory(int mode) {
 }
 
 Car GetCarData() {
-    cin.clear();
-    fflush(stdin);
-    cin.ignore();
     Car* NewCar = new Car();
 
     cout << endl << "Vehicle Make:  ";
@@ -642,6 +881,16 @@ Car GetCarData() {
     cout << endl << "Vehicle Extra Packages: ";
     getline(cin, NewCar->ExtraPackages);
     return *NewCar;
+}
+
+int searchCustomerList(string email) {
+    for (size_t i = 0; i < Customers.size(); i++) {
+        if (!Customers[i].Email.empty()) {
+            if (Customers[i].Email == email)
+                return i;
+        }
+    }
+    return -1;
 }
 
 int searchInventory(Car SearchedCar) {
@@ -895,22 +1144,66 @@ Sale createSale(Car* carSold, Customer* customer) {
 //Creates a new Customer object
 Customer createCustomer(Car* carSold) {
     Customer* newCustomer = new Customer();
+    string desc;
+    cout << "Enter the customer's information" << endl;
+    cout << "Enter 0 at any time to quit" << endl << endl;
 
-    cout << "Enter the customer's information" << endl << endl;
     cout << "First Name: ";
-    cin >> newCustomer->FirstName;
+    getline(cin, desc);
+    if (desc == "0") {
+        newCustomer->FirstName = " ";
+        return *newCustomer;
+    }
+    newCustomer->FirstName = desc;
+
     cout << "Last Name: ";
-    cin >> newCustomer->LastName;
+    getline(cin, desc);
+    if (desc == "0") {
+        newCustomer->FirstName = " ";
+        return *newCustomer;
+    }
+    newCustomer->LastName = desc;
+
     cout << "Address: ";
-    cin >> newCustomer->Address;
+    getline(cin, desc);
+    if (desc == "0") {
+        newCustomer->FirstName = " ";
+        return *newCustomer;
+    }
+    newCustomer->Address = desc;
+
     cout << "City: ";
-    cin >> newCustomer->City;
+    getline(cin, desc);
+    if (desc == "0") {
+        newCustomer->FirstName = " ";
+        return *newCustomer;
+    }
+    newCustomer->City = desc;
     cout << "Zip Code: ";
-    cin >> newCustomer->Zip;
-    cout << "Phone Number: ";
-    cin >> newCustomer->Phone;
+    getline(cin, desc);
+    if (desc == "0") {
+        newCustomer->FirstName = " ";
+        return *newCustomer;
+    }
+    newCustomer->Zip = desc;
+
+    cout << "Phone Number (e.g. (123) 456-7890): ";
+    getline(cin, desc);
+    if (desc == "0") {
+        newCustomer->FirstName = " ";
+        return *newCustomer;
+    }
+    newCustomer->Phone = desc;
+
     std::cout << "Email: ";
-    cin >> newCustomer->Email;
+    getline(cin, desc);
+    if (desc == "0") {
+        newCustomer->FirstName = " ";
+        return *newCustomer;
+    }
+    newCustomer->Email = desc;
+
+    newCustomer->CarBought = carSold->carName();
 
     return *newCustomer;
 }
@@ -1004,6 +1297,7 @@ int addSale() {
         }
     } while (true);
 }
+
 Customer editCustomer(Customer customer) {
     int num;
     string desc;
@@ -1277,6 +1571,7 @@ int addDeleteInventory() {
         cout << "3. Exit " << endl << endl;
 
         cin >> num;
+        clearLine();
         switch (num)
         {
         case 1:
@@ -1348,6 +1643,215 @@ int VehicleHistory() {
     } while (true);
 }
 
+int editOrder() {
+    vector<Car> orderedCars;
+    unsigned int order;
+    int num;
+    int index = 0, carIndex;
+        
+    do {
+        clearTerminal();
+        cout << "Edit Order" << endl << endl;
+        orderedCars = filterInventory(Cars, 19, "All");
+        printOrderStatus(orderedCars);
+        
+        do {
+            cout << "Enter the number of the order you would like to change (0 to exit): ";
+            cin >> order;
+            clearLine();
+            if (order >= 0 && order <= orderedCars.size()) {
+                break;
+            }
+            cout << "Invalid Option. Try again" << endl;
+        } while (true);
+
+        if (order == 0) {
+            return 1;
+        }
+        else {
+            do {
+                clearTerminal();
+                orderedCars = filterInventory(Cars, 19, "All");
+                printOrderStatus(orderedCars);
+                cout << "1) Customer" << endl;
+                cout << "2) Order Date" << endl;
+                cout << "3) Order Status" << endl;
+                cout << "4) Delete Order" << endl;
+                cout << "0) Exit" << endl;
+                
+                do {
+                    cout << "What would you like to edit: ";
+                    cin >> num;
+                    clearLine();
+                    if (num >= 0 && num <= 4) {
+                        break;
+                    }
+                    cout << "Invalid Option Please enter a number between 0-4" << endl;
+                } while (true);
+                if (num == 0) {
+                    break;
+                }
+                else if (num == 1) {
+                    Customer customer;
+                    index = searchCustomerList(orderedCars[order-1].Customer);
+                    carIndex = searchInventory(orderedCars[order-1]);
+                    if (index == -1) {
+                        cout << "Customer could not be found" << endl;
+                    }
+                    else {
+                        customer = editCustomer(Customers[index]);
+                        Cars[carIndex].Customer = customer.Email;
+                    }
+                }
+                else if(num == 2) {
+                    string desc;
+                    index = searchInventory(orderedCars[order-1]);
+                    do {
+                        cout << "Enter Order Date (e.g. 01:24:2020) (0 to exit): ";
+                        cin >> desc;
+                        clearLine();
+                        if (isValidDate(desc) || desc == "0") {
+                            break;
+                        }
+                    } while (true);
+                    if (desc != "0")
+                        Cars[index].setDate(desc);
+                }
+                else if (num == 3){
+                    string desc;
+                    index = searchInventory(orderedCars[order-1]);
+                    do {
+                        cout << "Enter Order Status (e.g. Ordered, Backordered, or Delivered) (0 to exit): ";
+                        cin >> desc;
+                        clearLine();
+                        if (checkMatch("Ordered", desc) || checkMatch("Backordered", desc) || checkMatch("Delivered", desc) || desc == "0") {
+                            break;
+                        }
+                        cout << "Invalid Option. Try again" << endl;
+                    } while (true);
+                    if (desc != "0")
+                        Cars[index].OrderStatus = desc;
+                }
+                else {
+                    string choice;
+                    index = searchInventory(orderedCars[order-1]);
+                    cout << "Are you sure you want to delete this order? (Y/N): ";
+                    do {
+                        cin >> choice;
+                        clearLine();
+                        if (choice != "Y" || choice != "y" || choice != "N" || choice != "n") {
+                            cout << "Please enter a 'Y' or 'N' to delete the order or not: ";
+                        }
+                        else
+                            break;
+                    } while (true);
+                    if (choice == "Y" || choice == "y") {
+                        Cars[index].Customer = " ";
+                        Cars[index].DeliveryDate = " ";
+                        Cars[index].OrderStatus = " ";
+                        break;
+                    }
+                }
+
+            } while (true);
+        }
+        
+    } while (true);
+}
+
+int processOrderMenu() {
+    int num;
+    vector<Car> cars;
+    string desc;
+    do {
+        cars = Cars;
+        clearTerminal();
+        cout << "Process Order" << endl << endl;
+        cout << "1) Process Order For Existing Customer" << endl;
+        cout << "2) Process Order For New Customer" << endl;
+        cout << "3) Edit Order" << endl;
+        cout << "0) Exit" << endl;
+
+        do {
+            cout << "Menu: ";
+            cin >> num;
+            clearLine();
+            if (num >= 0 && num <= 3) {
+                break;
+            }
+            cout << "Invalid Option Please enter a number between 0-3" << endl;
+        } while (true);
+
+        if (num == 0) {
+            return 0;
+        }
+        else if (num == 1) {
+            clearTerminal();
+            Car carOrdered = GetCarData();
+            clearTerminal();
+            Customer customer = findCustomer();
+            if (customer.FirstName != " ") {
+                do {
+                    cout << "Enter Order Date (e.g. 01:24:2020): ";
+                    cin >> desc;
+                    clearLine();
+                    if (isValidDate(desc)) {
+                        break;
+                    }
+                } while (true);
+                carOrdered.setDate(desc);
+                do {
+                    cout << "Enter Order Status (e.g. Ordered, Backordered, or Delivered) (0 to exit): ";
+                    cin >> desc;
+                    clearLine();
+                    if (checkMatch(desc, "Ordered") || checkMatch(desc, "Backordered") || checkMatch(desc, "Delivered") || desc == "0") {
+                        break;
+                    }
+                    cout << "Invalid Option. Try again" << endl;
+                } while (true);
+                if (desc != "0") {
+                    carOrdered.OrderStatus = desc;
+                    Cars.push_back(carOrdered);
+                }
+            }
+        }
+        else if (num == 2) {
+            clearTerminal();
+            Car carOrdered = GetCarData();
+            clearTerminal();
+            Customer customer = createCustomer(&carOrdered);
+            if (customer.FirstName != " ") {
+                do {
+                    cout << "Enter Order Date (e.g. 01:24:2020): ";
+                    cin >> desc;
+                    clearLine();
+                    if (isValidDate(desc)) {
+                        break;
+                    }
+                } while (true);
+                carOrdered.setDate(desc);
+                do {
+                    cout << "Enter Order Status (e.g. Ordered, Backordered, or Delivered) (0 to exit): ";
+                    cin >> desc;
+                    clearLine();
+                    if (checkMatch("Ordered", desc) || checkMatch("Backordered", desc) || checkMatch("Delivered", desc) || desc == "0") {
+                        break;
+                    }
+                    cout << "Invalid Option. Try again" << endl;
+                } while (true);
+                if (desc != "0") {
+                    carOrdered.OrderStatus = desc;
+                    Cars.push_back(carOrdered);
+                }
+            }
+        }
+        else {
+            editOrder();
+        }
+
+    } while (true);
+}
+
 int viewOrderStatus() {
     int num;
     string choice;
@@ -1358,7 +1862,7 @@ int viewOrderStatus() {
         cout << "Order Status" << endl << endl;
         cout << "1) Ordered" << endl;
         cout << "2) Backordered" << endl;
-        cout << "3) Recently Ordered" << endl;
+        cout << "3) Recently Delivered" << endl;
         cout << "4) All Orders" << endl;
         cout << "0) Exit" << endl;
 
@@ -1456,7 +1960,7 @@ int orderStatusMenu() {
             return 1;
         }
         else if (num == 1) {
-
+            processOrderMenu();
         }
         else if (num == 2) {
             viewOrderStatus();
@@ -1500,7 +2004,10 @@ int mainMenu() {
 
         case 3:
             clearTerminal();
-            subExitCode = orderStatusMenu();
+            while (subExitCode != 1)
+            {
+                subExitCode = orderStatusMenu();
+            }
             break;
 
         case 4:

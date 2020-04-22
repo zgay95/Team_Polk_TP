@@ -4,7 +4,7 @@
 
 //Blank Constructor
 Customer::Customer() {
-	FirstName = "";
+	FirstName = " ";
 	LastName = "";
 	Email = "";
 	Phone = "";

@@ -4,23 +4,28 @@
 
 //Blank Constructor
 Car::Car() {
-	Make = "";
-	Model = "";
-	Year = "";
-	EngineCapacity = "";
-	TransmissionType = "";
-	HandlingCapability = "";
-	SafetyAndSecurity = "";
-	ExteriorDesign = "";
-	InteriorDesign = "";
-	AudioSystem = "";
-	ComfortAndConvenience = "";
-	MaintenancePrograms = "";
-	ExtraPackages = "";
+	Make = " ";
+	Model = " ";
+	Year = " ";
+	EngineCapacity = " ";
+	TransmissionType = " ";
+	HandlingCapability = " ";
+	SafetyAndSecurity = " ";
+	ExteriorDesign = " ";
+	InteriorDesign = " ";
+	AudioSystem = " ";
+	ComfortAndConvenience = " ";
+	MaintenancePrograms = " ";
+	ExtraPackages = " ";
+	DeliveryDate = " ";
+	SchedueledMaintenance = " ";
+	UnschedueledRepairs = " ";
+	OrderStatus = " ";
+	Customer = " ";
 
 };
 //Populated Constructor
-Car::Car(string Mk, string Md, string Y, string EC, string TT, string HC, string IC, string SS, string ED, string ID, string AS, string CC, string MP, string EP, string DD, string SM, string UR, string OR) {
+Car::Car(string Mk, string Md, string Y, string EC, string TT, string HC, string IC, string SS, string ED, string ID, string AS, string CC, string MP, string EP, string DD, string SM, string UR, string OR, string CU) {
 	Make = Mk;
 	Model = Md;
 	Year = Y;
@@ -39,8 +44,8 @@ Car::Car(string Mk, string Md, string Y, string EC, string TT, string HC, string
 	try {
 		if (!DD.empty() && DD != " ") {
 			dateOfDelivery.month = stoi(DD.substr(0, 2));
-			dateOfDelivery.day = stoi(DD.substr(3, 5));
-			dateOfDelivery.year = stoi(DD.substr(6, 8));
+			dateOfDelivery.day = stoi(DD.substr(3, 2));
+			dateOfDelivery.year = stoi(DD.substr(6, 4));
 		}
 	}
 	catch (const invalid_argument& e) {
@@ -51,6 +56,7 @@ Car::Car(string Mk, string Md, string Y, string EC, string TT, string HC, string
 	SchedueledMaintenance = SM;
 	UnschedueledRepairs = UR;
 	OrderStatus = OR;
+	Customer = CU;
 };
 
 void Car::DisplayCarData()
@@ -73,9 +79,10 @@ void Car::DisplayCarData()
 
 void Car::setDate(string date) {
 	try {
+		DeliveryDate = date;
 		dateOfDelivery.month = stoi(date.substr(0, 2));
-		dateOfDelivery.day = stoi(date.substr(3, 5));
-		dateOfDelivery.year = stoi(date.substr(6, 8));
+		dateOfDelivery.day = stoi(date.substr(3, 2));
+		dateOfDelivery.year = stoi(date.substr(6, 4));
 	}
 	catch (const exception& e) {
 

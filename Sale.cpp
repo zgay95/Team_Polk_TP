@@ -23,8 +23,8 @@ Sale::Sale(Car CS, Customer BC, string price, string date, string dealerName) {
     priceSold = stod(price, &sz);
 
     dateSold.month = stoi(date.substr(0, 2));
-    dateSold.day = stoi(date.substr(3, 5));
-    dateSold.year = stoi(date.substr(6, 8));
+    dateSold.day = stoi(date.substr(3, 2));
+    dateSold.year = stoi(date.substr(6, 4));
 
     dealer = dealerName;
 };
@@ -36,8 +36,8 @@ void Sale::setPrice(string price) {
 
 void Sale::setDate(string date) {
     dateSold.month = stoi(date.substr(0, 2));
-    dateSold.day = stoi(date.substr(3, 5));
-    dateSold.year = stoi(date.substr(6, 8));
+    dateSold.day = stoi(date.substr(3, 2));
+    dateSold.year = stoi(date.substr(6, 4));
 }
 
 string Sale::dateString() {
