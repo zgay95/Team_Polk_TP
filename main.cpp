@@ -612,7 +612,7 @@ Customer findCustomer() {
             cout << "5) I want to quit searching" << endl << endl;
 
             do {
-                cout << "Please select the statement that descibes your situation: ";
+                cout << "Please select the statement that describes your situation: ";
                 cin >> num;
                 clearLine();
                 if (num >= 0 && num <= 5) {
