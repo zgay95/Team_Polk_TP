@@ -712,7 +712,7 @@ Car findCarInInventory(int mode) {
         cin >> choice;
         if (choice >= 1 || choice <= 14) {
             clearLine();
-            cout << "Enter the desciption of the car: ";
+            cout << "Enter the description of the car: ";
             getline(cin, desc);
             carsList = filterInventory(carsList, choice, desc);
             if (carsList.empty()) {
@@ -751,7 +751,7 @@ Car findCarInInventory(int mode) {
                         cout << "4) I want to restart the search" << endl;
                         cout << "5) I want to quit searching" << endl << endl;
                     }
-                    cout << "Please select the statement that descibes your situation: " << endl;
+                    cout << "Please select the statement that describes your situation: " << endl;
                     cin >> choice;
 
                     if (choice == 1 && mode != 0) {
