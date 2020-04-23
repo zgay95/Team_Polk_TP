@@ -716,7 +716,7 @@ Car findCarInInventory(int mode) {
             getline(cin, desc);
             carsList = filterInventory(carsList, choice, desc);
             if (carsList.empty()) {
-                cout << "There are no cars with that desciption in the inventory" << endl;
+                cout << "There are no cars with that description in the inventory" << endl;
                 cout << "Would you like to restart your search? (Y/N): ";
                 do {
                     cin >> desc;
